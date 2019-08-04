@@ -18,34 +18,37 @@ computeGeometry(moonGeometry2);
 // moonGeometry2.computeVertexNormals();//for shadows to work properly
 
 
-const bumpScale=.05;
+const bumpScale=.1;
 const shine=0.2;
 
 const loader = new THREE.TextureLoader();
  //pos-x, neg-x, pos-y, neg-y, pos-z, neg-z
+let texturepath = './images/cubemap8K/';
+let bumpmappath = './images/heightmap4K/'
+
 const cubeMaterials = [
-     new THREE.MeshPhongMaterial({map: loader.load('./images/cubemap4K/nz.jpg'),
-          bumpMap: loader.load('./images/heightmap4K/nz.jpg'),
+     new THREE.MeshPhongMaterial({map: loader.load(texturepath+'nz.jpg'),
+          bumpMap: loader.load(bumpmappath+'nz.jpg'),
           bumpScale:  bumpScale,
           shininess: shine}),
-     new THREE.MeshPhongMaterial({map: loader.load('./images/cubemap4K/pz.jpg'),
-          bumpMap: loader.load('./images/heightmap4K/pz.jpg'),
+     new THREE.MeshPhongMaterial({map: loader.load(texturepath+'pz.jpg'),
+          bumpMap: loader.load(bumpmappath+'pz.jpg'),
           bumpScale:  bumpScale,
           shininess: shine}),
-     new THREE.MeshPhongMaterial({map: loader.load('./images/cubemap4K/py.jpg'),
-          bumpMap: loader.load('./images/heightmap4K/py.jpg'),
+     new THREE.MeshPhongMaterial({map: loader.load(texturepath+'py.jpg'),
+          bumpMap: loader.load(bumpmappath+'py.jpg'),
           bumpScale:  bumpScale,
           shininess: shine}),
-     new THREE.MeshPhongMaterial({map: loader.load('./images/cubemap4K/ny.jpg'),
-          bumpMap: loader.load('./images/heightmap4K/ny.jpg'),
+     new THREE.MeshPhongMaterial({map: loader.load(texturepath+'ny.jpg'),
+          bumpMap: loader.load(bumpmappath+'ny.jpg'),
           bumpScale:  bumpScale,
           shininess: shine}),
-     new THREE.MeshPhongMaterial({map: loader.load('./images/cubemap4K/px.jpg'),
-          bumpMap: loader.load('./images/heightmap4K/px.jpg'),
+     new THREE.MeshPhongMaterial({map: loader.load(texturepath+'px.jpg'),
+          bumpMap: loader.load(bumpmappath+'px.jpg'),
           bumpScale:  bumpScale,
           shininess: shine}),
-     new THREE.MeshPhongMaterial({map: loader.load('./images/cubemap4K/nx.jpg'),
-          bumpMap: loader.load('./images/heightmap4K/nx.jpg'),
+     new THREE.MeshPhongMaterial({map: loader.load(texturepath+'nx.jpg'),
+          bumpMap: loader.load(bumpmappath+'nx.jpg'),
           bumpScale:  bumpScale,
           shininess: shine}),
    ];
