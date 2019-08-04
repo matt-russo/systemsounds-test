@@ -55,7 +55,7 @@ window.onload = function () {
   // document.getElementById('loaderText').style.visibility = "hidden";
   document.getElementById('loader').style.visibility = "hidden";
   document.getElementById('blackOverlay').style.visibility = "hidden";
-  document.getElementById('playButton').classList.remove('hidden');
+  // document.getElementById('playButton').classList.remove('hidden');
   // document.getElementById('orbiter').classList.remove('hidden');
 }
 

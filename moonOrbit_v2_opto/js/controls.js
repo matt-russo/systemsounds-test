@@ -13,8 +13,8 @@ function switchMode() {
 function play() {
   audioContext.resume();
   playDrone(drone, gainNodeDrone);
-  switchMode(); 
-  document.getElementById('playButton').classList.add('hidden');
+  switchMode();
+  // document.getElementById('playButton').classList.add('hidden');
   started=true;
 }
 
