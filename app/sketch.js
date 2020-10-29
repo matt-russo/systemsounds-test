@@ -184,6 +184,7 @@ function init() {
 
 
 function touchStarted() {
+  userStartAudio();
   if (mode == "automatic") {
 
     if (mouseX >= 0 && mouseX <= imWidth / imScale && mouseY >= 0 && mouseY <= imHeight / imScale) {
@@ -205,6 +206,7 @@ function touchEnded() {
 }
 
 function mousePressed() {
+  userStartAudio();
   if (radius(mouseX,mouseY)<.45) { //to avoid buttons, is there a better way?
   // if (mouseX >= 0 && mouseX <= imWidth / imScale && mouseY >= 0 && mouseY <= imHeight / imScale) {
     autox = mouseX;
