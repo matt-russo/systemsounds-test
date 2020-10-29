@@ -31,12 +31,12 @@ body {
   -webkit-transform:scale(0.9); /* Safari and Chrome */
 }
 
-#xray_button,#xraygrey_button {
+#xray_button,#xrayOff_button {
 	background: url('./images/buttons/xrayButton.png') no-repeat;
 	background-size:cover;
 	background-position:center center;
 }
-#opt_button,#optgrey_button {
+#opt_button,#optOff_button {
 	background: url('./images/buttons/optButton.png') no-repeat;
 	background-size:cover;
 	background-position:center center;

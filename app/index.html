@@ -22,26 +22,6 @@
 	<script src="keyboard.js"></script>
 	<script src="sketch.js"></script>
 
-	<!-- <div class="mid">
-
-	  <label class="rocker">
-	    <input type="checkbox" id="checkbox" onclick="toggleMode()" checked>
-	    <span class="switch-left">Manual</span>
-	    <span class="switch-right">Auto</span>
-	  </label>
-
-		<div class="arrow hidden" id="leftArrow" onclick="slower()">
-			<div class="arrow-top L"></div>
-			<div class="arrow-bottom L"></div>
-		</div>
-		<div class="arrow hidden" id="rightArrow" onclick="faster()">
-			<div class="arrow-top R"></div>
-			<div class="arrow-bottom R"></div>
-		</div>
-	</div> -->
-
-
-
 	<div class="buttonbar" id="buttonbar">
 		<label class="rocker">
 		 <input type="checkbox" id="checkbox" onclick="toggleMode()" checked>
@@ -57,19 +37,10 @@
 		 <div class="arrow-top R"></div>
 		 <div class="arrow-bottom R"></div>
 	 </div>
-	 		<button type="button" class="imgbutton hidden wavelength" id="xraygrey_button" onclick="makeXray();" ontouchstart="makeXray();">X-RAY</button>
+	 		<button type="button" class="imgbutton hidden wavelength" id="xrayOff_button" onclick="makeXray();" ontouchstart="makeXray();">X-RAY</button>
 	 		<button type="button" class="imgbutton wavelength" id="xray_button" onclick="makeXray();" ontouchstart="makeXray();" >X-RAY</button>
-
-			<!-- <input type="image" src="images/buttons/xrayButton.png" class="imgbutton hidden wavelength" id="xraygrey_button" onclick="makeXray();" ontouchstart="makeXray();" />
-			<input type="image" src="images/buttons/xrayButton.png" class="imgbutton wavelength" id="xray_button" onclick="makeXray();" ontouchstart="makeXray();" /> -->
-
-			<!-- <input type="image" src="images/buttons/optButton.png" class="imgbutton hidden wavelength" id="optgrey_button" onclick="makeOpt();" ontouchstart="makeOpt();"/>
-			<input type="image" src="images/buttons/optButton.png" class="imgbutton wavelength" id="opt_button" onclick="makeOpt();" ontouchstart="makeOpt();"/> -->
-
-			<button type="button" class="imgbutton hidden wavelength" id="optgrey_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
+			<button type="button" class="imgbutton hidden wavelength" id="optOff_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
 			<button type="button" class="imgbutton wavelength" id="opt_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
-
-
 	</div>
 
 </body>
