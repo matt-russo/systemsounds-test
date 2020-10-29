@@ -2,19 +2,24 @@ var imWidth = 1080,
   imHeight = 810;
 var cnv;
 var imScale;
-var cursorScale = .25;
-var cursorObj, cursorAuto;
+var cursorScale = .3;
 
-var nNotesO = 23; //number of notes for optical layer
-var nNotesX = 15; //number of notes for xray layer
+var nNotes = 23; //saturn had 15
+var minValue = 10;
+var step = (256. - minValue) / nNotes;
+var pixNum = 0,pixNum0 = 0,lastPixNum = 0,lastPixNum0 = 0;
 
-var minValue = 10; //pixels with value lower than this do not trigger sound
-var pixNum = 0,lastPixNum = 0;
+var mode, wavelength;
+var notes = [];
 
-var mode='manual',xrayOn=true, optOn=true;
-var notes = [],notesX =[];
 var autox = 0,autoy = 0,autoTheta = 0,autoR = 0.5;
-var speed = .005,maxSpeed = .16,minSpeed = 0.0006,speedSign = 1;
+
+var speed = .005, scanSpeed= 1;
+var yJump = 25;
+var maxSpeed = 40.,minSpeed = 0.01;
+var speedSign = 1,ySpeedSign = 2;
+
+var cursorObj, cursorAuto;
 
 var touchIsDown = false;
 
@@ -24,16 +29,6 @@ function preload() {
   img3 = loadImage("./images/xray500c.jpg");
   cursorImg = loadImage("./images/crosshairs2.png");
   soundFormats('mp3');
-
-  for (i = 0; i < nNotesO; i++) {
-      note = loadSound('./sounds/crystalBowl/' + (i + 1) + '.mp3');
-      notes.push(note);
-    }
-
-  for (i = 0; i < nNotesX; i++) {
-      noteX = loadSound('./sounds/wineGlass/' + (i + 1) + '.mp3');
-      notesX.push(noteX);
-    }
 }
 
 
@@ -51,6 +46,17 @@ function setup() {
 
   cursorObj = new cursorIm(0, 0);
   cursorAuto = new autoCursor(0, 0);
+
+  // mode='oscillator';
+  osc = new p5.Oscillator(20,'sine'); // set frequency and type
+  osc.amp(0);
+  osc.freq(40);
+  // osc.start();
+
+  // mode='manual';
+
+  init();
+
 }
 
 
@@ -64,31 +70,65 @@ function draw() {
   // document.getElementById('buttonbar').setAttribute("style", "width:100%");
   // document.getElementById('buttonbar').setAttribute("style", "width:1080"); //didn't work
 
-  if (optOn==true && xrayOn==true) {
+  if (wavelength == 'comp') {
     image(img, 0, 0, imWidth / imScale, imHeight / imScale);
+    imgData= img;
+    imgData2=img2;
+    imgData3=img3;
   }
-  if (optOn==true && xrayOn==false) {
+  if (wavelength == 'opt') {
     image(img2, 0, 0, imWidth / imScale, imHeight / imScale);
+    imgData= img2;
   }
-  if (optOn==false && xrayOn==true) {
+  if (wavelength == 'xray') {
     image(img3, 0, 0, imWidth / imScale, imHeight / imScale);
+    imgData= img3;
   }
 
+  if (mode=='oscillator'){
+    if (mouseIsPressed || touchIsDown) {
+      pixRad = radius(mouseX,mouseY);
 
+      pixNum = 4 * (Math.round(mouseX * imScale) + Math.round(mouseY * imScale) * imWidth); //labels pixel
+      pixValue = (imgData.pixels[pixNum] + imgData.pixels[pixNum + 1] + imgData.pixels[pixNum + 2]) / 3.;
+      pixValue = Math.pow(pixValue / 256, 1.5) * 256; //scale brightness
+
+      var amp = map(pixValue, 0, 256, 0, 1);
+      osc.amp(amp);
+
+      //map radius to freq
+      var freq = map(pixRad, 0, 1, 40, 800);
+      osc.freq(freq);
+
+      //map brightness to freq
+      // var freq = map(pixValue, 0, 256, 40, 800);
+      // osc.freq(freq);
+
+      lastPixNum = pixNum;
+
+      cursorObj.update(mouseX, mouseY);
+      cursorObj.show();
+    } else {osc.amp(0);}
+
+
+
+  }
   if (mode == 'manual') {
     if (mouseIsPressed || touchIsDown) {
+
       pixNum = 4 * (Math.round(mouseX * imScale) + Math.round(mouseY * imScale) * imWidth); //labels pixel
+      if (wavelength=='comp'){
+        pixValue = (imgData2.pixels[pixNum] + imgData2.pixels[pixNum + 1] + imgData2.pixels[pixNum + 2]) / 3.;
+        pixValue2 = (imgData3.pixels[pixNum] + imgData3.pixels[pixNum + 1] + imgData3.pixels[pixNum + 2]) / 3.;
 
-      if (pixNum != lastPixNum && optOn){
-        pixValue2 = (img2.pixels[pixNum] + img2.pixels[pixNum + 1] + img2.pixels[pixNum + 2]) / 3.;
-        pixValue2 = Math.pow(pixValue2 / 256, 1.5) * 256; //scale brightness
-      }
-      if (pixNum != lastPixNum && xrayOn) {
-        pixValue3 = (img3.pixels[pixNum] + img3.pixels[pixNum + 1] + img3.pixels[pixNum + 2]) / 3.;
-        pixValue3 = Math.pow(pixValue3 / 150, 1.5) * 256; //scale brightness
+      } else {
+        pixValue = (imgData.pixels[pixNum] + imgData.pixels[pixNum + 1] + imgData.pixels[pixNum + 2]) / 3.;
+        pixValue = Math.pow(pixValue / 256, 1.5) * 256; //scale brightness
       }
 
-      playNotes();
+      if (pixNum != lastPixNum) {
+        playNotes();
+      }
       lastPixNum = pixNum;
 
       cursorObj.update(mouseX, mouseY);
@@ -97,25 +137,34 @@ function draw() {
   }
 
   if (mode == 'automatic') {
+
     //oval orbit
     autoTheta += speed/autoR;
+
     autox = 0.5*imWidth/imScale*(1 + autoR*Math.cos(autoTheta));
     autoy = 0.5*imHeight/imScale*(1 + autoR*Math.sin(autoTheta));
+    //scan
+    // autox += speedSign * scanSpeed;
 
-    pixNum = Math.round(autox * imScale) + Math.round(autoy * imScale) * imWidth;
-    pixNum = Math.round(4 * pixNum); //labels pixel
+    // autox += speedSign * speed;
+    // autoy = autoy0 + imHeight / imWidth * (autox - autox0);
+    // checkBounce();
 
-    if (pixNum != lastPixNum && optOn){
-      pixValue2 = (img2.pixels[pixNum] + img2.pixels[pixNum + 1] + img2.pixels[pixNum + 2]) / 3.;
-      pixValue2 = Math.pow(pixValue2 / 256, 1.5) * 256; //scale brightness
+    pixNum0 = Math.round(autox * imScale) + Math.round(autoy * imScale) * imWidth;
+    pixNum = Math.round(4 * pixNum0); //labels pixel
+
+    if (wavelength=='comp'){
+      pixValue = (imgData2.pixels[pixNum] + imgData2.pixels[pixNum + 1] + imgData2.pixels[pixNum + 2]) / 3.;
+      pixValue2 = (imgData3.pixels[pixNum] + imgData3.pixels[pixNum + 1] + imgData3.pixels[pixNum + 2]) / 3.;
+
+    } else {
+      pixValue = (imgData.pixels[pixNum] + imgData.pixels[pixNum + 1] + imgData.pixels[pixNum + 2]) / 3.;
+      pixValue = Math.pow(pixValue / 256, 1.5) * 256; //scale brightness
     }
-    if (pixNum != lastPixNum && xrayOn) {
-      pixValue3 = (img3.pixels[pixNum] + img3.pixels[pixNum + 1] + img3.pixels[pixNum + 2]) / 3.;
-      pixValue3 = Math.pow(pixValue3 / 150, 1.5) * 256; //scale brightness
+    if (pixNum0 != lastPixNum0) {
+      playNotes();
     }
-
-    playNotes();
-    lastPixNum = pixNum;
+    lastPixNum0 = pixNum0;
 
     cursorAuto.update(autox, autoy);
     cursorAuto.show();
@@ -123,12 +172,26 @@ function draw() {
 }
 
 
+function init() {
+  for (i = 0; i < nNotes; i++) {
+    note = loadSound('./sounds/crystalBowl/' + (i + 1) + '.mp3');
+    notes.push(note);
+  }
+  // makeComp();
+  wavelength = 'comp';
+  makeManual();
+}
+
+
 function touchStarted() {
+  userStartAudio();
   if (mode == "automatic") {
 
     if (mouseX >= 0 && mouseX <= imWidth / imScale && mouseY >= 0 && mouseY <= imHeight / imScale) {
       autox = mouseX;
       autoy = mouseY;
+      // autox0 = mouseX;
+      // autoy0 = mouseY;
       dx = mouseX * imScale/imWidth - 0.5;
       dy = mouseY * imScale/imHeight - 0.5;
       autoTheta = Math.atan2(dy,dx);
@@ -143,53 +206,67 @@ function touchEnded() {
 }
 
 function mousePressed() {
+  userStartAudio();
   if (radius(mouseX,mouseY)<.45) { //to avoid buttons, is there a better way?
+  // if (mouseX >= 0 && mouseX <= imWidth / imScale && mouseY >= 0 && mouseY <= imHeight / imScale) {
     autox = mouseX;
     autoy = mouseY;
-
+    // autox0 = mouseX;
+    // autoy0 = mouseY;
+    // autoR = radius(mouseX,mouseY);
     dx = mouseX * imScale/imWidth - 0.5;
     dy = mouseY * imScale/imHeight - 0.5;
     autoTheta = Math.atan2(dy,dx);
     autoR = 2*Math.sqrt(dx*dx+dy*dy);
+    // console.log(autoR,mouseX * imScale/imWidth,dx);
+    // console.log(autoR,mouseY * imScale/imHeight,dy);
   }
 }
 
 function playNotes() {
-  if (pixValue2>minValue && optOn) {
-      i = Math.round(map(pixValue2 - minValue, 0, 256-minValue, 0, nNotesO-1));
+  if (pixValue>minValue) {
+    i = Math.round(map(pixValue - minValue, 0, 256-minValue, 0, nNotes-1));
+    // console.log(pixValue,i);
+    notes[i].play();
+
+    if (wavelength=='comp' && pixValue2>minValue){
+      i = Math.round(map(pixValue2 - minValue, 0, 256-minValue, 0, nNotes-1));
       // console.log(pixValue,i);
       notes[i].play();
     }
-    if (pixValue3>minValue && xrayOn){
-      i = Math.round(map(pixValue3 - minValue, 0, 256-minValue, 0, nNotesX-1));
-      // console.log(pixValue,i);
-      notesX[i].play();
-    }
-
+  }
 }
 
-// function checkBounce() {
-//   if (autox >= imWidth / imScale || autox < 0) {
-//     speedSign *= -1;
-//     autoy += ySpeedSign*yJump;
-//   }
-//   if (autoy >= imHeight / imScale || autoy < 0) {
-//     ySpeedSign *= -1
-//     autoy += ySpeedSign*yJump;
-//   }
-// }
+
+function checkBounce() {
+  if (autox >= imWidth / imScale || autox < 0) {
+    speedSign *= -1;
+    autoy += ySpeedSign*yJump;
+  }
+  if (autoy >= imHeight / imScale || autoy < 0) {
+    ySpeedSign *= -1
+    autoy += ySpeedSign*yJump;
+  }
+}
 
 
 function faster() {
   speed *= 2.;
   speed = Math.min(speed, maxSpeed);
+  scanSpeed *= 2.;
+  scanSpeed = Math.min(scanSpeed, maxSpeed);
 }
 
 function slower() {
   speed *= 0.5;
   speed = Math.max(speed, minSpeed);
+  scanSpeed *= 0.5;
+  scanSpeed = Math.min(scanSpeed, maxSpeed);
 }
 
+function makeOscillator() {
+  mode = 'oscillator';
+}
 
 function toggleMode() {
   if (mode=='automatic'){
@@ -202,40 +279,56 @@ function toggleMode() {
 
 function makeAutomatic() {
   mode = 'automatic';
+  osc.stop();
   autoR = 0.5;
+  // document.getElementById('autogrey_button').classList.add("hidden");
+  // document.getElementById('auto_button').classList.remove("hidden");
+  // document.getElementById('manualgrey_button').classList.remove("hidden");
+  // document.getElementById('manual_button').classList.add("hidden");
+  //
+  // document.getElementById('slower_button').classList.remove("hidden");
+  // document.getElementById('faster_button').classList.remove("hidden");
   document.getElementById('leftArrow').classList.remove("hidden");
   document.getElementById('rightArrow').classList.remove("hidden");
 }
 
 function makeManual() {
   mode = 'manual';
+  osc.stop();
+  // document.getElementById('manualgrey_button').classList.add("hidden");
+  // document.getElementById('manual_button').classList.remove("hidden");
+  // document.getElementById('autogrey_button').classList.remove("hidden");
+  // document.getElementById('auto_button').classList.add("hidden");
+  //
+  // document.getElementById('slower_button').classList.add("hidden");
+  // document.getElementById('faster_button').classList.add("hidden");
   document.getElementById('leftArrow').classList.add("hidden");
   document.getElementById('rightArrow').classList.add("hidden");
 }
 
 function makeOpt() {
-  if (optOn==false) {
-    optOn=true;
-    document.getElementById('optOff_button').classList.add("hidden");
+  if (wavelength=='xray') {
+    wavelength='comp';
+    document.getElementById('optgrey_button').classList.add("hidden");
     document.getElementById('opt_button').classList.remove("hidden");
   }
-  else {
-    optOn=false;
+  else if (wavelength=='comp') {
+    wavelength='xray';
     document.getElementById('opt_button').classList.add("hidden");
-    document.getElementById('optOff_button').classList.remove("hidden");
+    document.getElementById('optgrey_button').classList.remove("hidden");
   }
 }
 
 function makeXray() {
-  if (xrayOn==false) {
-    xrayOn=true;
-    document.getElementById('xrayOff_button').classList.add("hidden");
+  if (wavelength=='opt') {
+    wavelength='comp';
+    document.getElementById('xraygrey_button').classList.add("hidden");
     document.getElementById('xray_button').classList.remove("hidden");
   }
-  else {
-    xrayOn=false;
+  else if (wavelength=='comp') {
+    wavelength='opt';
     document.getElementById('xray_button').classList.add("hidden");
-    document.getElementById('xrayOff_button').classList.remove("hidden");
+    document.getElementById('xraygrey_button').classList.remove("hidden");
   }
 }
 
