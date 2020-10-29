@@ -148,7 +148,7 @@ function draw() {
 
     // autox += speedSign * speed;
     // autoy = autoy0 + imHeight / imWidth * (autox - autox0);
-    checkBounce();
+    // checkBounce();
 
     pixNum0 = Math.round(autox * imScale) + Math.round(autoy * imScale) * imWidth;
     pixNum = Math.round(4 * pixNum0); //labels pixel
@@ -205,7 +205,7 @@ function touchEnded() {
 }
 
 function mousePressed() {
-  if (radius(mouseX,mouseY)<0.45) { //to avoid buttons, is there a better way?
+  if (radius(mouseX,mouseY)<.45) { //to avoid buttons, is there a better way?
   // if (mouseX >= 0 && mouseX <= imWidth / imScale && mouseY >= 0 && mouseY <= imHeight / imScale) {
     autox = mouseX;
     autoy = mouseY;
@@ -366,3 +366,16 @@ function radius(x,y) {
   dy = Math.round(y * imScale)/imHeight - 0.5;
   return Math.sqrt(dx*dx+dy*dy)
 }
+// window.onload = function(){
+// $(".button").click(function(e) {
+//     e.stopPropagation();
+//     alert('child');
+//     console.log('Stopped');
+// });}
+window.onload = function(){
+  document.getElementById('opt_button').addEventListener("click",
+  function(){
+    console.log('Stopped');
+  },
+  true);
+};
