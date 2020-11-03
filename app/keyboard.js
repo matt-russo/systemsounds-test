@@ -7,27 +7,27 @@ window.addEventListener("keydown", function(e) {
 }, false);
 
 function keyPressed() {
-  if (keyCode == 32) {
+  if (keyCode == 32 || keyCode==80) {
     pauseVideo();
   }
-  if (keyCode == 90) {
+  if (keyCode == 77) {
     makeManual();
     document.getElementById("checkbox").checked = true;
   }
-  if (keyCode == 88) {
+  if (keyCode == 65) {
     makeAutomatic();
     document.getElementById("checkbox").checked = false;
   }
-  if (keyCode == 67) {
+  if (keyCode == 83) {
     slower();
   }
-  if (keyCode == 86) {
+  if (keyCode == 70) {
     faster();
   }
-  if (keyCode == 77) {
+  if (keyCode == 88) {
     makeXray();
   }
-  if (keyCode == 78) {
+  if (keyCode == 79) {
     makeOpt();
   }
 }
