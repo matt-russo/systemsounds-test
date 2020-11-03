@@ -128,11 +128,11 @@ function draw() {
       if (pixNum != lastPixNum) {
         if (optOn){
           pixValue2 = (img2.pixels[pixNum] + img2.pixels[pixNum + 1] + img2.pixels[pixNum + 2]) / 3.;
-          pixValue2 = Math.pow(pixValue2 / 256, 1.5) * 256; //scale brightness
+          pixValue2 = Math.pow(pixValue2 / 255, 1.5) * 255; //scale brightness
         }
         if (xrayOn) {
           pixValue3 = (img3.pixels[pixNum] + img3.pixels[pixNum + 1] + img3.pixels[pixNum + 2]) / 3.;
-          pixValue3 = Math.pow(pixValue3 / maxXrayPix, 1.5) * 256; //scale brightness
+          pixValue3 = Math.pow(pixValue3 / maxXrayPix, 1.5) * 255; //scale brightness
         }
 
         playNotes();
@@ -157,11 +157,11 @@ function draw() {
     if (pixNum != lastPixNum) {
       if (optOn){
         pixValue2 = (img2.pixels[pixNum] + img2.pixels[pixNum + 1] + img2.pixels[pixNum + 2]) / 3.;
-        pixValue2 = Math.pow(pixValue2 / 256, 1.5) * 256; //scale brightness
+        pixValue2 = Math.pow(pixValue2 / 255, 1.5) * 255; //scale brightness
       }
       if (xrayOn) {
         pixValue3 = (img3.pixels[pixNum] + img3.pixels[pixNum + 1] + img3.pixels[pixNum + 2]) / 3.;
-        pixValue3 = Math.pow(pixValue3 / 160, 1.5) * 256; //scale brightness
+        pixValue3 = Math.pow(pixValue3 / maxXrayPix, 1.5) * 255; //scale brightness
       }
 
       playNotes();
