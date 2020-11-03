@@ -4,8 +4,72 @@ body {
 		/* z-index: -1; */
 }
 
+#backgroundText {
+	display:inline-block;
+	position:fixed;
+	width: 100%; /* Full width (cover the whole page) */
+	height: 100%; /* Full height (cover the whole page) */
+	left: 0;
+	top: 50%;
+	text-align: center;
+	font-size:36px;
+	color:#000; /*turned to white in javascipt*/
+	z-index: -1;
+	margin: auto;
+}
+
+#yearCounter {
+	display:inline-block;
+	position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+	margin: auto;
+	text-align: center;
+	font-size: 28px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+	color: #ddd;
+	padding-top: 20px;
+  background-color: transparent; /* Black background with opacity */
+  z-index: 0; /* Specify a stack order in case you're using a different order for other elements */
+}
+
+
+#wrapper {
+	display:inline-block;
+	position: fixed; /* Sit on top of the page content */
+	z-index: 1; /* Specify a stack order in case you're using a different order for other elements */
+
+}
+
+.playpause label {
+	display: block;
+	box-sizing: border-box;
+	width: 0; height: 24px;
+	border-color: transparent transparent transparent #ddd;
+	transition: 100ms all ease;
+	cursor: pointer;
+	border-style: double;
+	border-width: 0px 0 0px 22px;}
+.playpause input[type="checkbox"] { visibility: hidden; }
+.playpause input[type="checkbox"]:checked + label {
+	border-style: solid;
+	border-width: 12px 0 12px 22px; }
+.playpause{
+	display:inline-block;
+	position: fixed; /* Sit on top of the page content */
+    /* text-align:center; */
+    /* position:relative; */
+    /* background-color:#404040; */
+	top:4.5px;
+	left:55%;
+}
+
+/* ###################TELESCOPE BUTTONS##########################*/
 .buttonbar {
-	padding: 20px;
+	padding: 30px;
 	width:100%;
 	display:inline-block;
 	position:fixed;
@@ -57,12 +121,12 @@ body {
 
 /* ##################### ROCKER ###########################*/
 
-.mid {
+/* .mid {
 	display:inline-block;
 	position: fixed;
 	margin-left: 2%;
 	top: 20%;
-}
+} */
 
 
 /* Switch starts here */

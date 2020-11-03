@@ -7,11 +7,16 @@ window.addEventListener("keydown", function(e) {
 }, false);
 
 function keyPressed() {
-  if (keyCode == 32 || keyCode == 90) {
+  if (keyCode == 32) {
+    pauseVideo();
+  }
+  if (keyCode == 90) {
     makeManual();
+    document.getElementById("checkbox").checked = true;
   }
   if (keyCode == 88) {
     makeAutomatic();
+    document.getElementById("checkbox").checked = false;
   }
   if (keyCode == 67) {
     slower();

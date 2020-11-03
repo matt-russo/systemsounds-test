@@ -16,39 +16,50 @@
 <body>
 	<script src="libraries/p5.js"></script>
 	<script src="libraries/p5.dom.js"></script>
-	<script src="libraries/p5.sound.min.js"></script>
+	<script src="libraries/p5.sound.js"></script>
+	<!-- <script src="libraries/p5.sound.min.js"></script>  -->
 	<script src="libraries/jquery-3.3.1.min.js"></script>
 	<!-- <script src="audio.js"></script> -->
 	<script src="keyboard.js"></script>
 	<script src="sketch.js"></script>
 
+	<div id="yearCounter"></div>
+	<div id="wrapper">
+          <div class="playpause">
+          <input type="checkbox" value="None" id="playpause" name="check" onclick="pauseVideo();" checked/>
+          <label for="playpause"></label>
+  			</div>
+  </div>
+
 	<div class="buttonbar" id="buttonbar">
 		<label class="rocker">
-		 <input type="checkbox" id="checkbox" onclick="toggleMode()" checked>
-		 <span class="switch-left">Manual</span>
-		 <span class="switch-right">Auto</span>
-	 </label>
+		 	<input type="checkbox" id="checkbox" onclick="toggleMode()" checked>
+		 	<span class="switch-left">Manual</span>
+		 	<span class="switch-right">Auto</span>
+	 	</label>
 
-	 <div class="arrow hidden" id="leftArrow" onclick="slower()">
-		 <div class="arrow-top L"></div>
-		 <div class="arrow-bottom L"></div>
-	 </div>
-	 <div class="arrow hidden" id="rightArrow" onclick="faster()">
-		 <div class="arrow-top R"></div>
-		 <div class="arrow-bottom R"></div>
-	 </div>
-	 		<button type="button" class="imgbutton hidden wavelength" id="xrayOff_button" onclick="makeXray();" ontouchstart="makeXray();">X-RAY</button>
-	 		<button type="button" class="imgbutton wavelength" id="xray_button" onclick="makeXray();" ontouchstart="makeXray();" >X-RAY</button>
-			<button type="button" class="imgbutton hidden wavelength" id="optOff_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
-			<button type="button" class="imgbutton wavelength" id="opt_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
+	 	<div class="arrow hidden" id="leftArrow" onclick="slower()">
+			<div class="arrow-top L"></div>
+			<div class="arrow-bottom L"></div>
+	 	</div>
+	 	<div class="arrow hidden" id="rightArrow" onclick="faster()">
+			<div class="arrow-top R"></div>
+		 	<div class="arrow-bottom R"></div>
+	  </div>
+
+		<button type="button" class="imgbutton hidden wavelength" id="xrayOff_button" onclick="makeXray();" ontouchstart="makeXray();">X-RAY</button>
+	 	<button type="button" class="imgbutton wavelength" id="xray_button" onclick="makeXray();" ontouchstart="makeXray();" >X-RAY</button>
+		<button type="button" class="imgbutton hidden wavelength" id="optOff_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
+		<button type="button" class="imgbutton wavelength" id="opt_button" onclick="makeOpt();" ontouchstart="makeOpt();">OPTICAL</button>
 	</div>
 
-</body>
-
 <div id="canvas"></div>
+<div class="hidden" id="backgroundText">CHOOSE A TELESCOPE</div>
+
 <!-- <div class="overlay" id="watermark"></div> -->
 <!-- <div>
 	<img type="image" src='images/watermark.png' class="watermark" style ="width:20%;margin:auto">
 </div> -->
+</body>
 
 </html>
