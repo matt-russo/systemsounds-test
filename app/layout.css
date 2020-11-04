@@ -8,15 +8,26 @@ body {
 	display:inline-block;
 	position:fixed;
 	width: 100%; /* Full width (cover the whole page) */
-	height: 100%; /* Full height (cover the whole page) */
-	left: 0;
-	top: 50%;
-	text-align: center;
-	font-size:36px;
+	/* height: 100%; /* Full height (cover the whole page) */ */
+	right: 0;
+	top: 0%;
+	text-align: right;
+	padding-right:3%;
+	font-size:20px;
 	color:#000; /*turned to white in javascipt*/
 	z-index: -1;
 	margin: auto;
 }
+
+#container {
+	display:inline-block;
+	position:fixed;
+	width:100%;
+	/* height:30%; */
+	z-index: 1;
+	margin-top:2%;
+}
+
 
 #yearCounter {
 	display:inline-block;
@@ -24,26 +35,24 @@ body {
   width: 100%; /* Full width (cover the whole page) */
   height: 100%; /* Full height (cover the whole page) */
 	margin: auto;
-	text-align: center;
+	text-align: left;
 	font-size: 28px;
   top: 0;
-  left: 0;
+  left: 48%;
   right: 0;
   bottom: 0;
 	color: #ddd;
 	padding-top: 20px;
+	text-shadow: 0px 0px 3px #000;
   background-color: transparent; /* Black background with opacity */
-  z-index: 0; /* Specify a stack order in case you're using a different order for other elements */
+  z-index: -1; /* Specify a stack order in case you're using a different order for other elements */
 }
-
-
-#wrapper {
+.playpause{
 	display:inline-block;
 	position: fixed; /* Sit on top of the page content */
-	z-index: 1; /* Specify a stack order in case you're using a different order for other elements */
-
+	top:5px;
+	right:40%;
 }
-
 .playpause label {
 	display: block;
 	box-sizing: border-box;
@@ -57,41 +66,25 @@ body {
 .playpause input[type="checkbox"]:checked + label {
 	border-style: solid;
 	border-width: 12px 0 12px 22px; }
-.playpause{
-	display:inline-block;
-	position: fixed; /* Sit on top of the page content */
-    /* text-align:center; */
-    /* position:relative; */
-    /* background-color:#404040; */
-	top:4.5px;
-	left:55%;
-}
+
 
 /* ###################TELESCOPE BUTTONS##########################*/
-.buttonbar {
-	padding: 30px;
-	width:100%;
-	display:inline-block;
-	position:fixed;
-}
 
-.wavelength {
+.imgbutton {
 	float:right;
 	width:120px;
 	/* height: 5%; */
 	margin-right: 1.5%;
 	color: white;
-	/* text-align: center; */
 	font-size: 20px;
 	font-weight: bold;
 	line-height: 120px;
 	border: none;
 	height:90px;
-
 	text-shadow: 0px 0px 3px #000;
 }
 
-.wavelength:active {
+.imgbutton:active {
   -webkit-transform:scale(0.9); /* Safari and Chrome */
 }
 
@@ -121,19 +114,10 @@ body {
 
 /* ##################### ROCKER ###########################*/
 
-/* .mid {
-	display:inline-block;
-	position: fixed;
-	margin-left: 2%;
-	top: 20%;
-} */
-
-
-/* Switch starts here */
 .rocker {
   display: inline-block;
   position: relative;
-	margin-top: -15px;
+	margin-top: -20px;
 
   font-size: 18px;
   font-weight: bold;
@@ -281,9 +265,6 @@ input:checked:focus + .switch-left + .switch-right {
     width: 100%;
 	}
 
-/* .arrow-top:hover {
-	background-color: #fff;
-} */
 .arrow-top.R {
     transform: rotate(45deg) translateY(30%);
     transform-origin: bottom right;
@@ -292,11 +273,6 @@ input:checked:focus + .switch-left + .switch-right {
 	    transform: rotate(-45deg) translateY(30%);
 	    transform-origin: bottom left;
 	  }
-/* .arrow-top:after {
-      left: 100%;
-      right: 0;
-      transition-delay: 0s;
-    } */
 .arrow-bottom.R {
     transform: rotate(-45deg);
     transform-origin: top right;
@@ -306,42 +282,12 @@ input:checked:focus + .switch-left + .switch-right {
     transform: rotate(45deg);
     transform-origin: top left;
 }
-/* .arrow-bottom:after {
-      left: 0;
-      right: 100%;
-      transition-delay: .15s;
-    }
-
-.arrow-top:after {
-      left: 0;
-      transition-delay: .15s;
-    }
-
-.arrow-bottom:after {
-      right: 0;
-      transition-delay: 0s;
-    } */
-
-
 .arrow:active {
     transform: translateX(-50%) translateY(-50%) scale(0.9);
-		/* transform: scale(0.9); */
   }
 
 /* ############################################################ */
 
 .hidden {
 		display: none;
-	}
-
-.watermark {
-		position: fixed;
-		width: 10%;
-		top: -8%;
-		left:34%;
-		/* margin-bottom:-20%; */
-		/* background: url('../images/watermark.png'); */
-		/* background-size: 30%; */
-		/* background-position: center;
-		background-repeat: no-repeat; */
 	}
